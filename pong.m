@@ -59,13 +59,21 @@ playing_flag = 1;
 drawField;
 waitfor(msgbox(sprintf('Player 1 (bottom) uses left and right arrow keys to move paddle.\nPlayer 2 (top) uses Z and C keys to move paddle.'),'Instructions','help'));
 
-while playing_flag == 1
-    updatePaddle;
-    updateBall;
-    redraw;
-end
+TIMER = timer('TimerFcn',@callBack, 'ExecutionMode', 'fixedRate', 'Period', 0.0005);
+start(TIMER);
 
-close(game);
+%Called in the thread
+    function callBack(obj, event)
+        if playing_flag == 1
+            updatePaddle;
+            updateBall;
+            redraw;
+        else
+            stop(TIMER);
+            close(game);
+        end
+    end
+
 return;
 
 %Draw field
@@ -256,15 +264,15 @@ return;
         end
         
         %wall collision
-        if (ball_pos(1) - BALL_R < EDGE_WIDTH)
-            ball_pos(1) = EDGE_WIDTH + BALL_R + 1;
+        if (ball_pos(1) < EDGE_WIDTH)
+            ball_pos(1) = EDGE_WIDTH + 1;
             ball_v(1) = -1*ball_v(1);
             accelerate;
             return;
         end
         
-        if (ball_pos(1) + BALL_R > WIDTH - EDGE_WIDTH)
-            ball_pos(1) = WIDTH - EDGE_WIDTH - BALL_R - 1;
+        if (ball_pos(1) > WIDTH - EDGE_WIDTH)
+            ball_pos(1) = WIDTH - EDGE_WIDTH - 1;
             ball_v(1) = -1*ball_v(1);
             accelerate;
             return;
