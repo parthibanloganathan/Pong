@@ -59,14 +59,23 @@ playing_flag = 1;
 drawField;
 waitfor(msgbox(sprintf('Player 1 (bottom) uses left and right arrow keys to move paddle.\nPlayer 2 (top) uses Z and C keys to move paddle.'),'Instructions','help'));
 
-while playing_flag == 1
-    updatePaddle;
-    updateBall;
-    redraw;
-end
 
-close(game);
-return;
+TIMER = timer('TimerFcn',@callBack, 'ExecutionMode', 'fixedRate', 'Period', 0.01);
+start(TIMER);
+
+%Called in the thread
+    function callBack(obj, event)
+        % disp('Called');
+        if playing_flag == 1
+            updatePaddle;
+            updateBall;
+            redraw;
+        else
+            stop(TIMER);
+            close(game);
+        end
+    end
+            
 
 %Draw field
     function drawField
