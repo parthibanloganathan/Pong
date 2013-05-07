@@ -57,6 +57,8 @@ SCORE_LIMIT = 3;
 playing_flag = 1;
 
 drawField;
+waitfor(msgbox(sprintf('Player 1 (bottom) uses left and right arrow keys to move paddle.\nPlayer 2 (top) uses Z and C keys to move paddle.'),'Instructions','help'));
+
 while playing_flag == 1
     updatePaddle;
     updateBall;
@@ -174,7 +176,7 @@ return;
 
 %accelerate
     function accelerate
-        rand_y = 0.98 + (1.04-0.98).*rand(1);
+        rand_y = 1 + (1.04-1).*rand(1);
         ball_v(2) = ball_v(2)*rand_y;
         
         if ball_v(1) > SPEED_LIMIT
