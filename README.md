@@ -1,4 +1,4 @@
 Pong
 ====
 
-Art of Engineering Final Project: Pong
+The classic game of Pong in MATLAB
